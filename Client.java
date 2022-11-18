@@ -6,7 +6,7 @@ public class Client {
         try {
             Socket socket = new Socket("localhost", 8090);
             OutputStream out = socket.getOutputStream();
-            String msg = "Tendry Ny Avo";
+            String msg = "Aina avotra";
             out.write(msg.getBytes());
             out.close();
             socket.close();
