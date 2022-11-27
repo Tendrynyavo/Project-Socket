@@ -38,19 +38,16 @@ public class Serveur {
         byte[] content = new byte[4678];
         int count = input.read(content);
         int divide = count / 3;
-        int increment = 1;
         int off = 0;
         DataOutputStream out = null;
-        while (increment <= 3) {
-            Socket socket = new Socket("localhost", 8090 + increment);
+        Socket socket = null;
+        for (int increment = 1; increment <= 3; increment++, off += divide) {
+            socket = new Socket("localhost", 8090 + increment);
             out = new DataOutputStream(socket.getOutputStream());
-            int lengthName = file.getIdFile().getBytes().length;
-            out.writeInt(lengthName);
+            out.writeInt(file.getIdFile().getBytes().length);
             out.write(file.getIdFile().getBytes());
-            out.write(content, off, divide);
-            increment++;
-            off += divide;
             if (increment == 3) divide += count - off - divide;
+            out.write(content, off, divide);
             out.close();
             socket.close();
         }
