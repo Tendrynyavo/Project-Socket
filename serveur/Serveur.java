@@ -1,7 +1,5 @@
 package serveur;
 
-import serveur.fichier.Fichier;
-
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;

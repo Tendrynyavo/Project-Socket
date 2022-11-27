@@ -3,17 +3,16 @@ package client;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.OutputStream;
 import java.net.Socket;
+import fichier.Fichier;
 
 public class Client {
     public static void main(String[] args) {
         try {
-            Socket socket = new Socket("localhost", 8090);
-            File file = new File("compile.sh");
-            sendFile(file, socket);
+            Fichier file = new Fichier("compile.sh");
+            file.insert(null);
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            System.out.println(e);
         }
     }
 
