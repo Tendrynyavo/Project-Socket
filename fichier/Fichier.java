@@ -1,8 +1,9 @@
 package fichier;
 
-import connection.BddObject;
+import java.io.File;
+import java.sql.*;
 
-public class Fichier extends BddObject {
+public class Fichier extends File {
     
     String idFile;
     String nom;
@@ -23,21 +24,33 @@ public class Fichier extends BddObject {
         return nom;
     }
 
-    public Fichier() {
-        this.setCountPK(8);
-        this.setFunctionPK("nextval('seqFile')");
-        this.setPrefix("FILE");
-        this.setTable("file");
+    public Fichier(String pathname) throws Exception {
+        super(pathname);
+        this.setIdFile(createPrimaryKey());
     }
 
-    public Fichier(String nom) throws Exception {
-        this();
-        setIdFile(buildPrimaryKey(getPostgreSQL()));
-        setNom(nom);
+    public String createPrimaryKey() throws Exception {
+        Class.forName("org.postgresql.Driver");
+        Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5433/file?user=postgres&password=postgres");
+        connection.setAutoCommit(false);
+        Statement statement = connection.createStatement();
+        ResultSet result = statement.executeQuery("SELECT nextval('\"seqFile\"')");
+        result.next();
+        String sequence = result.getString(1);
+        result.close();
+        statement.close();
+        connection.close();
+        return "FILE" + sequence;
     }
 
-    public Fichier(String idFile, String nom) {
-        setIdFile(idFile);
-        setNom(nom);
+    public void save() throws Exception {
+        Class.forName("org.postgresql.Driver");
+        Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5433/file?user=postgres&password=postgres");
+        connection.setAutoCommit(false);
+        Statement statement = connection.createStatement();
+        statement.executeUpdate("INSERT INTO file (idFile, nom) VALUES ('" + this.getIdFile() + "', '" + this.getName() + "')");
+        connection.commit();
+        statement.close();
+        connection.close();
     }
 }
