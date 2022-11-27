@@ -40,15 +40,17 @@ public class Serveur {
         int divide = count / 3;
         int increment = 1;
         int off = 0;
+        DataOutputStream out = null;
         while (increment <= 3) {
             Socket socket = new Socket("localhost", 8090 + increment);
-            DataOutputStream out = new DataOutputStream(socket.getOutputStream());
+            out = new DataOutputStream(socket.getOutputStream());
             int lengthName = file.getIdFile().getBytes().length;
             out.writeInt(lengthName);
             out.write(file.getIdFile().getBytes());
             out.write(content, off, divide);
-            off += divide;
             increment++;
+            off += divide;
+            if (increment == 3) divide += count - off - divide;
             out.close();
             socket.close();
         }

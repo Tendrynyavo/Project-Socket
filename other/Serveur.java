@@ -24,8 +24,9 @@ public class Serveur {
         String name = getName(input);
         FileOutputStream out = new FileOutputStream(new File("./other/" + name + "part " + 1));
         byte[] content = new byte[4675];
-        int count = input.read(content);
-        out.write(content, 0, count);
+        int count;
+        while ((count = input.read(content)) > -1)
+            out.write(content, 0, count);
     }
 
     public static String getName(InputStream input) throws Exception {
