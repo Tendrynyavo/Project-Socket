@@ -7,10 +7,10 @@ import java.io.InputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-public class Serveur2 {
+public class UploadServer1 {
     public static void main(String[] args) {
         try {
-            ServerSocket server = new ServerSocket(8093);
+            ServerSocket server = new ServerSocket(8092);
             Socket client = server.accept();
             DataInputStream input = new DataInputStream(client.getInputStream());
             setFile(input);
@@ -22,7 +22,7 @@ public class Serveur2 {
 
     public static void setFile(InputStream input) throws Exception {
         String name = getName(input);
-        FileOutputStream out = new FileOutputStream(new File("./other/" + name + " part " + 3));
+        FileOutputStream out = new FileOutputStream(new File("./other/" + name + " part " + 2));
         byte[] content = new byte[4675];
         int count;
         while ((count = input.read(content)) > -1)
